@@ -13,7 +13,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/bagmeg/ework/cmd/config"
+	"github.com/bagmeg/ework/internal/config"
 	"github.com/google/go-github/v50/github"
 	"github.com/spf13/cobra"
 	"golang.org/x/oauth2"

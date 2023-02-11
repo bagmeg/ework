@@ -13,7 +13,7 @@ var (
 )
 
 const (
-	DefaultConfigPath = "/.ework/config.yaml"
+	DefaultConfigPath = "~/.ework/config.yaml"
 )
 
 const (
