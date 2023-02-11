@@ -13,7 +13,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/bagmeg/ework/internal/config"
 	"github.com/google/go-github/v50/github"
 	"github.com/spf13/cobra"
 	"golang.org/x/oauth2"
@@ -34,11 +33,10 @@ var githubCmd = &cobra.Command{
 var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "list github repositories",
-	Long:  "list github repositories",
 	Run: func(cmd *cobra.Command, args []string) {
 		ctx := context.Background()
 		ts := oauth2.StaticTokenSource(
-			&oauth2.Token{AccessToken: config.GithubToken},
+			&oauth2.Token{AccessToken: cfg.Token},
 		)
 		tc := oauth2.NewClient(ctx, ts)
 
@@ -57,8 +55,7 @@ var listCmd = &cobra.Command{
 }
 
 func run(cmd *cobra.Command, args []string) {
-	fmt.Println("github called")
-
+	cmd.Help()
 }
 
 func init() {

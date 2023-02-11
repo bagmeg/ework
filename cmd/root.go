@@ -25,11 +25,10 @@ var rootCmd = &cobra.Command{
 	Short: "exem work command line tool",
 	Long:  `A worker for the exem`,
 
-	PreRunE: func(cmd *cobra.Command, args []string) error {
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		if err := Init(); err != nil {
 			return err
 		}
-		fmt.Println(*cfg)
 		return nil
 	},
 	// Uncomment the following line if your bare application
