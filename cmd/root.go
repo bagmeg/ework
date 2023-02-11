@@ -12,10 +12,6 @@ import (
 )
 
 var (
-	configPath string
-)
-
-var (
 	cfg *config.Config
 )
 
@@ -26,9 +22,6 @@ var rootCmd = &cobra.Command{
 	Long:  `A worker for the exem`,
 
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-		if err := Init(); err != nil {
-			return err
-		}
 		return nil
 	},
 	// Uncomment the following line if your bare application
@@ -52,16 +45,5 @@ func init() {
 	// when this action is called directly.
 	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	rootCmd.PersistentFlags().StringVarP(&configPath, "config", "c", config.DefaultConfigPath, "config file (default is $HOME/.ework/config.yaml)")
-}
-
-func Init() error {
-	// generate new config type
-	cfg = config.New()
-
-	// load config from file
-	if err := config.Load(cfg, []string{configPath}); err != nil {
-		return err
-	}
-	return nil
+	rootCmd.PersistentFlags().StringP("config", "c", config.DefaultConfigPath, "config file (default is $HOME/.ework/config.yaml)")
 }

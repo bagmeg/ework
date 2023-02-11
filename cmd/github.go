@@ -10,16 +10,9 @@ package cmd
 // 4. organization의 repository를 clone할때는 특정 기간동안 action이 없는 repository는 clone하지 않는다.
 
 import (
-	"context"
-	"fmt"
-
-	"github.com/google/go-github/v50/github"
 	"github.com/spf13/cobra"
-	"golang.org/x/oauth2"
-)
 
-var (
-	list string
+	"github.com/bagmeg/ework/internal/internal_github"
 )
 
 // githubCmd represents the github command
@@ -30,46 +23,40 @@ var githubCmd = &cobra.Command{
 	Run:   run,
 }
 
-var listCmd = &cobra.Command{
-	Use:   "list",
-	Short: "list github repositories",
-	Run: func(cmd *cobra.Command, args []string) {
-		ctx := context.Background()
-		ts := oauth2.StaticTokenSource(
-			&oauth2.Token{AccessToken: cfg.Token},
-		)
-		tc := oauth2.NewClient(ctx, ts)
-
-		client := github.NewClient(tc)
-
-		// list all repositories for the authenticated user
-		repos, _, err := client.Repositories.List(ctx, "", nil)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		for _, repo := range repos {
-			fmt.Println(*repo.Name)
-		}
-	},
-}
-
 func run(cmd *cobra.Command, args []string) {
 	cmd.Help()
 }
 
+// ---------------------- list -------------------------------
+
+var listCmd = &cobra.Command{
+	Use:   "list",
+	Short: "list github repositories",
+	Run:   internal_github.ListRun,
+}
+
+// ---------------------- repository -------------------------------
+
+var cloneCmd = &cobra.Command{
+	Use:   "clone repository_name",
+	Short: "clone given repository to current directory",
+	Run:   internal_github.CloneRun,
+}
+
+// ---------------------- init -------------------------------
+
 func init() {
 	rootCmd.AddCommand(githubCmd)
 
+	// -----------------------------------------------------
+
 	githubCmd.AddCommand(listCmd)
-	// Here you will define your flags and configuration settings.
+	githubCmd.AddCommand(cloneCmd)
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// githubCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// -----------------------------------------------------
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// githubCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	listCmd.Flags().BoolP("organization", "o", false, "list organizations")
+	listCmd.Flags().BoolP("repository", "r", false, "list repositories`")
 
+	// -----------------------------------------------------
 }
