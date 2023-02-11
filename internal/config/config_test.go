@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	testDir = "../../test"
+	testDir = "../../testDir"
 )
 
 func TestConfig(t *testing.T) {
