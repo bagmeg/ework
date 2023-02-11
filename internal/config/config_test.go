@@ -2,21 +2,19 @@ package config
 
 import (
 	"fmt"
-	"os"
 	"testing"
+)
 
-	"gopkg.in/yaml.v3"
+const (
+	testDir = "../../test"
 )
 
 func TestConfig(t *testing.T) {
 	c := New()
 
-	f, err := os.ReadFile("../../test/config.yaml")
-	if err != nil {
+	if err := Load(c, []string{testDir + "/conig.yaml"}); err != nil {
 		t.Fatal(err)
 	}
 
-	yaml.Unmarshal(f, &c)
-
-	fmt.Println(c)
+	fmt.Println(*c)
 }

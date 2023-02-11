@@ -15,15 +15,27 @@ var (
 	configPath string
 )
 
+var (
+	cfg *config.Config
+)
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "ework",
 	Short: "exem work command line tool",
 	Long:  `A worker for the exem`,
+
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		if err := Init(); err != nil {
+			return err
+		}
+		fmt.Println(*cfg)
+		return nil
+	},
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Hello ework")
+		fmt.Println("root called")
 	},
 }
 
@@ -42,4 +54,15 @@ func init() {
 	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	rootCmd.PersistentFlags().StringVarP(&configPath, "config", "c", config.DefaultConfigPath, "config file (default is $HOME/.ework/config.yaml)")
+}
+
+func Init() error {
+	// generate new config type
+	cfg = config.New()
+
+	// load config from file
+	if err := config.Load(cfg, []string{configPath}); err != nil {
+		return err
+	}
+	return nil
 }
