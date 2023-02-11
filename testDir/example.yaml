@@ -1,0 +1,4 @@
+GithubToken: "token"
+User:
+  name: "name"
+  email: "example@naver.com"
